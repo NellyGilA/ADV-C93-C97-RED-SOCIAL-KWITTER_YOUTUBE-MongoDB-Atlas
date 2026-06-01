@@ -1,0 +1,285 @@
+En la nueva computadora
+
+1. Instalar Node.js
+
+Descarga e instala Node.js:
+https://nodejs.org/en/download?utm_source=chatgpt.com
+
+Node.js Downloads
+
+Verifica:
+node -v
+npm -v
+
+
+2. Descargar tu proyecto
+
+Si lo tienes en GitHub:
+
+git clone https://github.com/nagilargaez-ai/ADV-C93-C97-RED-SOCIAL-KWITTER.git
+
+o copia toda la carpeta por USB/Drive.
+
+
+Paso 3: Crear la carpeta de la API (este paso funciona)
+Abre una terminal y ejecuta:
+
+mkdir kwitter-api
+cd kwitter-api
+
+			3. Instalar dependencias del backend
+			Entra a:
+			cd kwitter-api
+
+
+Paso 4: Inicializar el proyecto
+npm init -y
+
+Se creará un archivo:
+package.json
+
+
+
+Paso 5: Instalar dependencias
+
+npm install express mongodb cors
+
+Cuando termine, deberías ver algo parecido a:
+
+added 80 packages
+found 0 vulnerabilities
+
+
+
+Paso 6: Crear el archivo server.js
+
+Dentro de la carpeta kwitter-api crea un archivo llamado:
+
+server.js
+
+y pega esto:
+------------------------
+Inicio
+------------------------
+
+const express = require("express");
+const cors = require("cors");
+const { MongoClient, ObjectId } = require("mongodb");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const uri =
+"mongodb+srv://admin:TU_PASSWORD@cluster0.kn45jip.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+const client = new MongoClient(uri);
+
+let db;
+
+async function connectDB() {
+    await client.connect();
+    db = client.db("kwitter");
+    console.log("MongoDB conectado");
+}
+
+connectDB();
+
+
+// =========================
+// CREAR SALA
+// =========================
+
+app.post("/rooms", async (req, res) => {
+
+    const room = {
+        room_name: req.body.room_name
+    };
+
+    await db.collection("rooms").insertOne(room);
+
+    res.json({ success: true });
+});
+
+
+// =========================
+// OBTENER SALAS
+// =========================
+
+app.get("/rooms", async (req, res) => {
+
+    const rooms = await db
+        .collection("rooms")
+        .find({})
+        .toArray();
+
+    res.json(rooms);
+});
+
+
+// =========================
+// CREAR MENSAJE
+// =========================
+
+app.post("/messages", async (req, res) => {
+
+    const message = {
+        room: req.body.room,
+        name: req.body.name,
+        message: req.body.message,
+        like: 0
+    };
+
+    await db.collection("messages")
+        .insertOne(message);
+
+    res.json({ success: true });
+});
+
+
+// =========================
+// OBTENER MENSAJES
+// =========================
+
+app.get("/messages/:room", async (req, res) => {
+
+    const room = req.params.room;
+
+    const messages = await db
+        .collection("messages")
+        .find({ room: room })
+        .toArray();
+
+    res.json(messages);
+});
+
+
+// =========================
+// LIKE
+// =========================
+
+app.put("/messages/:id/like", async (req, res) => {
+
+    const id = req.params.id;
+
+    const message = await db
+        .collection("messages")
+        .findOne({
+            _id: new ObjectId(id)
+        });
+
+    const likes = message.like + 1;
+
+    await db.collection("messages")
+        .updateOne(
+            { _id: new ObjectId(id) },
+            { $set: { like: likes } }
+        );
+
+    res.json({ success: true });
+});
+
+app.listen(3000, () => {
+    console.log("Servidor ejecutándose en puerto 3000");
+});
+
+------------------------
+Final
+------------------------
+
+
+Paso 7: Reemplazar la contraseña de Mongodb Atlas
+
+Busca esta línea:
+
+admin:TU_PASSWORD
+
+y coloca la contraseña real del usuario admin que creaste en Atlas.
+
+admin:1AbDMZSnJsGpoqjv
+
+const uri = "mongodb+srv://admin:1AbDMZSnJsGpoqjv@cluster0.kn45jip.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+
+Paso 8: Autorizar la nueva computadora en Atlas
+
+Este es el paso que más se olvida.
+
+Ve a Atlas:
+
+Security
+→ Network Access
+
+y agrega la IP de tu nueva computadora.
+
+Para pruebas rápidas puedes tener:
+
+0.0.0.0/0
+
+que permite conexiones desde cualquier IP.
+
+
+
+Paso 9: Crear la base de datos
+
+En Atlas:
+
+Browse Collections
+Create Database
+
+Nombre:
+
+kwitter
+
+Colección:
+
+rooms
+
+Luego crea otra colección:
+
+messages
+
+
+
+Paso 10: Ejecutar  ()
+
+Desde la terminal:
+
+cd C:\Users\victo\kwitter-api
+node server.js
+
+Si todo está correcto deberías ver:
+
+MongoDB conectado
+Servidor ejecutándose en puerto 3000
+
+
+
+Paso 11: Abrir el frontend
+
+Si usas VS Code:
+
+Instala la extensión:
+
+Live Server
+
+y abre:
+
+index.html
+
+con:
+
+Open with Live Server
+
+
+Paso 12: Configurar la API de YouTube
+
+Si la API Key está escrita en:
+
+const API_KEY = "AIza..."
+
+no necesitas hacer nada más.
+
+La misma clave funcionará en la nueva computadora.
+
