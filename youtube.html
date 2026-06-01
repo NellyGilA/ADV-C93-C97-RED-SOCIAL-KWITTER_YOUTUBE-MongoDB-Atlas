@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KWITTER Videos</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="youtube.css">
+        
+
+    <script src="youtube.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+    <button id="logout"
+    onclick="window.location='kwitter_room.html'"
+    class="glyphicon glyphicon-arrow-left btn btn-primary">
+    Regresar
+    </button>
+
+    <center>
+
+        <h1 class="header">
+            Kwitter Videos
+            <sup>
+                <img src="m2.png">
+            </sup>
+        </h1>
+
+        <h3 id="user_name" class="color_white"></h3>
+
+        <div class="form-group">
+            <input
+            type="text"
+            id="search"
+            class="form-control"
+            placeholder="Buscar videos">
+        </div>
+
+        <button
+        onclick="buscarVideos()"
+        class="btn btn-success">
+        Buscar
+        </button>
+
+        <button
+        onclick="verFavoritos()"
+        class="btn btn-warning">
+        Favoritos
+        </button>
+
+        <hr>
+
+        <div id="videos"></div>
+
+    </center>
+
+</div>
+
+
+
+    <hr>
+
+    <div id="videos"></div>
+
+</body>
+</html>
